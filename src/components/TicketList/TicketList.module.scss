@@ -1,0 +1,20 @@
+.ticketList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .showMore {
+    width: 502px;
+    border-radius: 5px;
+    background: rgb(33, 150, 243);
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 15px;
+    margin-bottom: 50px;
+  }
+}

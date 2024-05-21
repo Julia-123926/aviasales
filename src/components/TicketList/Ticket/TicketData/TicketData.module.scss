@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  gap: 20px;
+  .item {
+    display: flex;
+    flex-direction: column;
+    width: 141px;
+    .filterName {
+      color: rgb(160, 176, 185);
+      font-size: 12px;
+      line-height: 18px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .filterValue {
+      font-size: 14px;
+      line-height: 21px;
+    }
+  }
+}
