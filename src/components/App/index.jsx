@@ -1,4 +1,7 @@
 import React from "react";
+// import { useSelector, useDispatch } from "react-redux";
+
+//useSelector похож на useContext
 import Header from "../Header";
 import styles from "./App.module.scss";
 import TransferCountFilter from "../TransferCountFilter";
