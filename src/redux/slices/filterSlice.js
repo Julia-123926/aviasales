@@ -20,6 +20,7 @@ const filterSlice = createSlice({
       state.filters.oneStop = action.payload;
       state.filters.twoStops = action.payload;
       state.filters.threeStops = action.payload;
+      console.log(action);
     },
     toggleFilter(state, action) {
       const { filterName, value } = action.payload;
@@ -27,6 +28,7 @@ const filterSlice = createSlice({
       const { noStops, oneStop, twoStops, threeStops } = state.filters;
       const allFiltersSelected = noStops && oneStop && twoStops && threeStops;
       state.filters.all = allFiltersSelected;
+      // console.log(state.filters);
     },
   },
 });

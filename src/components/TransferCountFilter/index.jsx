@@ -5,7 +5,7 @@ import { toggleAll, toggleFilter } from "../../redux/slices/filterSlice";
 
 const TransferCountFilter = () => {
   const dispatch = useDispatch();
-  const filters = useSelector((state) => state.filters.filters);
+  const filters = useSelector((state) => state.filterReducer.filters);
 
   const handleToggleAll = () => {
     dispatch(toggleAll(!filters.all));

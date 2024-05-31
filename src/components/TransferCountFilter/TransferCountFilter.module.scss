@@ -32,4 +32,9 @@
       }
     }
   }
+  @media (max-width: 850px) {
+    width: 320px;
+    display: flex;
+    align-self: center;
+  }
 }

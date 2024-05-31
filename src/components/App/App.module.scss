@@ -1,5 +1,28 @@
+.app {
+  margin: 0 auto;
+}
+
 .main {
   display: flex;
   justify-content: center;
   gap: 20px;
+  // width: 90%;
+  margin: 0 auto;
 }
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 850px) {
+  .main {
+    flex-direction: column;
+  }
+}
+
+// @media (max-width: 520px) {
+//   .wrapper {
+//     width: 380px;
+//   }
+// }
