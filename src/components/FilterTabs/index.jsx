@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./FilterTabs.module.scss";
+import { useDispatch } from "react-redux";
+import { setSorting } from "../../redux/slices/ticketSlice";
+import { Radio } from "antd";
 
 const FilterTabs = () => {
-  const tabs = ["Самый дешевый", "Самый быстрый", "Оптимальный"];
+  const dispatch = useDispatch();
+  const tabs = ["САМЫЙ ДЕШЕВЫЙ", "САМЫЙ БЫСТРЫЙ", "ОПТИМАЛЬНЫЙ"];
+  const handleTabChange = (e) => {
+    dispatch(setSorting({ tab: e.target.value }));
+  };
   return (
-    <div className={styles.tabs}>
+    <Radio.Group
+      defaultValue="САМЫЙ ДЕШЕВЫЙ"
+      buttonStyle="solid"
+      className={styles.tabs}
+      onChange={handleTabChange}
+    >
       {tabs.map((tab) => (
-        <button className={styles.tabsItem}>{tab.toUpperCase()}</button>
+        <Radio.Button className={styles.tabsItem} key={tab} value={tab}>
+          {tab}
+        </Radio.Button>
       ))}
-    </div>
+    </Radio.Group>
   );
 };
 

@@ -1,53 +1,79 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSearchId, fetchTickets } from "../../redux/slices/ticketSlice";
+import { fetchTickets, handleLoadMore } from "../../redux/slices/ticketSlice";
 import styles from "./TicketList.module.scss";
 import Ticket from "./Ticket";
+import { filterAndSortTickets } from "../../redux/sort";
+import { Spin, Alert } from "antd";
+import { fetchSearchId } from "../../redux/slices/sessionIdSlice";
 
 const TicketList = () => {
   const dispatch = useDispatch();
-  const tickets = useSelector((state) => state.ticketsReducer.tickets);
-  const searchId = useSelector((state) => state.ticketsReducer.searchId);
-  const stop = useSelector((state) => state.ticketsReducer.stop);
-  // const status = useSelector((state) => state.ticketsReducer.status);
 
-  const [visibleTickets, setVisibleTickets] = useState(5);
+  const { tickets, stop, filters, sorting, status, error, numberOfTickets } =
+    useSelector((state) => state.ticketsReducer);
+  // console.log(tickets);
+  const { sessionId } = useSelector((state) => state.sessionIdReducer);
+  const [filteredAndSortedTickets, setFilteredAndSortedTickets] = useState([]);
 
   useEffect(() => {
     dispatch(fetchSearchId());
   }, [dispatch]);
 
   useEffect(() => {
-    if (searchId) {
-      // while (!stop) {
-      dispatch(fetchTickets(searchId));
-      // }
+    if (sessionId) {
+      dispatch(fetchTickets(sessionId));
     }
-  }, [dispatch, searchId, stop]);
+  }, [dispatch, sessionId]);
 
-  useEffect(() => {}, [visibleTickets]);
+  useEffect(() => {
+    if (status === "failed" && !stop) {
+      dispatch(fetchTickets(sessionId));
+    }
+  }, [status, stop]);
 
-  const handleLoadMore = () => {
-    setVisibleTickets((prev) => prev + 5);
-  };
+  useEffect(() => {
+    if (tickets.length > 0) {
+      const updatedTickets = filterAndSortTickets(tickets, filters, sorting);
+      setFilteredAndSortedTickets(updatedTickets);
+    }
+  }, [tickets, filters, sorting]);
+
   return (
-    <ul className={styles.ticketList}>
-      {/* <h1>{searchId}</h1>
+    <>
+      <h1>{stop.toString()}</h1>
+      <h1>{status}</h1>
+      {status === "loading" && <Spin className={styles.spin} size="large" />}
+      {error && status === "failed" && <Alert message={error} type="error" />}
+      <ul className={styles.ticketList}>
+        {/* <h1>{searchId}</h1>
       <h1>{stop.toString()}</h1> */}
-      {/* <button onClick={() => console.log(tickets)}>tickets</button> */}
-      {tickets.slice(0, visibleTickets).map((ticket, index) => (
-        <li key={index} className={styles.listItem}>
-          <Ticket {...ticket} />
-        </li>
-      ))}
-      {stop ? (
+        {/* <button onClick={() => console.log(tickets)}>tickets</button> */}
+        {filteredAndSortedTickets
+          .slice(0, numberOfTickets)
+          .map((ticket, index) => (
+            <li key={index} className={styles.listItem}>
+              <Ticket {...ticket} />
+            </li>
+          ))}
+        {/* {stop ? (
         <button className={styles.showMore}>ВСЕ БИЛЕТЫ ЗАГРУЖЕНЫ</button>
       ) : (
         <button className={styles.showMore} onClick={handleLoadMore}>
           ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
         </button>
-      )}
-    </ul>
+      )} */}
+        {/* <button className={styles.showMore} onClick={handleLoadMore}>
+          ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
+        </button> */}
+        <button
+          className={styles.showMore}
+          onClick={() => dispatch(handleLoadMore())}
+        >
+          ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
+        </button>
+      </ul>
+    </>
   );
 };
 

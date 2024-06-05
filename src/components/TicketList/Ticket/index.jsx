@@ -3,12 +3,12 @@ import styles from "./Ticket.module.scss";
 import LogoS7 from "../../../assets/S7.png";
 import TicketData from "./TicketData";
 
-const Ticket = ({ price, segments }) => {
+const Ticket = ({ price, segments, carrier }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.ticketTop}>
         <span className={styles.ticketPrice}>{price} P</span>
-        <img src={LogoS7} alt="S7_logo" />
+        <img src={`https://pics.avs.io/99/36/${carrier}.png`} alt="logo" />
       </div>
       <div className={styles.space}>
         {segments.map((segment, index) => (

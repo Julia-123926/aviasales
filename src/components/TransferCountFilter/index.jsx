@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./TransferCountFilter.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleAll, toggleFilter } from "../../redux/slices/filterSlice";
+import { toggleAll, toggleFilter } from "../../redux/slices/ticketSlice";
 
 const TransferCountFilter = () => {
   const dispatch = useDispatch();
-  const filters = useSelector((state) => state.filterReducer.filters);
+  const filters = useSelector((state) => state.ticketsReducer.filters);
 
   const handleToggleAll = () => {
     dispatch(toggleAll(!filters.all));
@@ -43,6 +43,7 @@ const TransferCountFilter = () => {
                     type="checkbox"
                     id={filter.key}
                   />
+                  <span className={styles.customCheckbox}></span>
                   <span className={styles.text}>{filter.value}</span>
                 </div>
               </label>
