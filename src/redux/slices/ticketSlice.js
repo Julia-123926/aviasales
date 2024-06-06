@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -12,30 +13,26 @@ const initialState = {
     threeStops: true,
   },
   sorting: "САМЫЙ ДЕШЕВЫЙ",
-  // error: "",
   numberOfTickets: 5,
 };
 
 export const fetchTickets = createAsyncThunk(
   "tickets/fetchTickets",
   async (searchId, { dispatch, rejectWithValue }) => {
-    console.log("fetch tickets");
     try {
-      const response = await fetch(
-        `https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`
-      );
+      const response = await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch tickets");
+        const err = new Error("Failed to fetch tickets");
+        err.code = response.status;
+        throw err;
       }
       const data = await response.json();
       if (!data.stop) {
         dispatch(fetchTickets(searchId));
       }
-      console.log(data.tickets);
       return { tickets: data.tickets, stop: data.stop };
     } catch (error) {
-      console.log("aaaaaaaa");
-      return rejectWithValue(error.message);
+      return rejectWithValue({ message: error.message, code: error.code || 404 });
     }
   }
 );
@@ -58,9 +55,6 @@ const ticketsSlice = createSlice({
       const allFiltersSelected = noStops && oneStop && twoStops && threeStops;
       state.filters.all = allFiltersSelected;
     },
-    // setActiveSortingTab(state, action) {
-    //   state.sorting = action.payload;
-    // },
     setSorting(state, action) {
       state.sorting = action.payload.tab;
     },
@@ -70,11 +64,8 @@ const ticketsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTickets.pending, (state, action) => {
-        state.tickets = [];
+      .addCase(fetchTickets.pending, (state) => {
         state.status = "loading";
-        // state.stop = true;
-        // state.error = action.payload;
       })
       .addCase(fetchTickets.fulfilled, (state, action) => {
         const { tickets, stop } = action.payload;
@@ -83,13 +74,13 @@ const ticketsSlice = createSlice({
         state.stop = stop;
       })
       .addCase(fetchTickets.rejected, (state, action) => {
+        const { code, message } = action.payload;
+        state.stop = code !== 500;
         state.status = "failed";
-        state.stop = false;
-        state.error = action.payload;
+        state.error = message;
       });
   },
 });
 
-export const { setItems, toggleAll, toggleFilter, handleLoadMore, setSorting } =
-  ticketsSlice.actions;
+export const { setItems, toggleAll, toggleFilter, handleLoadMore, setSorting } = ticketsSlice.actions;
 export default ticketsSlice.reducer;

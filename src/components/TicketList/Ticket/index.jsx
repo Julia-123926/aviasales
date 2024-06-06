@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./Ticket.module.scss";
-import LogoS7 from "../../../assets/S7.png";
+import { v4 as id } from "uuid";
+
 import TicketData from "./TicketData";
+import styles from "./Ticket.module.scss";
 
 const Ticket = ({ price, segments, carrier }) => {
   return (
@@ -11,8 +12,8 @@ const Ticket = ({ price, segments, carrier }) => {
         <img src={`https://pics.avs.io/99/36/${carrier}.png`} alt="logo" />
       </div>
       <div className={styles.space}>
-        {segments.map((segment, index) => (
-          <div key={index}>
+        {segments.map((segment) => (
+          <div key={id()}>
             <TicketData
               origin={segment.origin}
               destination={segment.destination}

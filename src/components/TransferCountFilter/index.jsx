@@ -1,7 +1,9 @@
 import React from "react";
-import styles from "./TransferCountFilter.module.scss";
 import { useSelector, useDispatch } from "react-redux";
+
 import { toggleAll, toggleFilter } from "../../redux/slices/ticketSlice";
+
+import styles from "./TransferCountFilter.module.scss";
 
 const TransferCountFilter = () => {
   const dispatch = useDispatch();

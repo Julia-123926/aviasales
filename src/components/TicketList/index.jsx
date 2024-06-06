@@ -1,18 +1,20 @@
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Spin, Alert } from "antd";
+import { v4 as id } from "uuid";
+
 import { fetchTickets, handleLoadMore } from "../../redux/slices/ticketSlice";
+import filterAndSortTickets from "../../redux/sort";
+import { fetchSearchId } from "../../redux/slices/sessionIdSlice";
+
 import styles from "./TicketList.module.scss";
 import Ticket from "./Ticket";
-import { filterAndSortTickets } from "../../redux/sort";
-import { Spin, Alert } from "antd";
-import { fetchSearchId } from "../../redux/slices/sessionIdSlice";
 
 const TicketList = () => {
   const dispatch = useDispatch();
 
-  const { tickets, stop, filters, sorting, status, error, numberOfTickets } =
-    useSelector((state) => state.ticketsReducer);
-  // console.log(tickets);
+  const { tickets, stop, filters, sorting, status, numberOfTickets } = useSelector((state) => state.ticketsReducer);
   const { sessionId } = useSelector((state) => state.sessionIdReducer);
   const [filteredAndSortedTickets, setFilteredAndSortedTickets] = useState([]);
 
@@ -41,37 +43,29 @@ const TicketList = () => {
 
   return (
     <>
-      <h1>{stop.toString()}</h1>
-      <h1>{status}</h1>
       {status === "loading" && <Spin className={styles.spin} size="large" />}
-      {error && status === "failed" && <Alert message={error} type="error" />}
+      {filteredAndSortedTickets.length === 0 && (
+        <Alert
+          message={
+            status === "failed"
+              ? "Не удалось получить билеты, повторите попытку позже"
+              : "К сожалению, билетов, подходящих под заданные параметры, не найдено"
+          }
+          type="info"
+        />
+      )}
+      {}
       <ul className={styles.ticketList}>
-        {/* <h1>{searchId}</h1>
-      <h1>{stop.toString()}</h1> */}
-        {/* <button onClick={() => console.log(tickets)}>tickets</button> */}
-        {filteredAndSortedTickets
-          .slice(0, numberOfTickets)
-          .map((ticket, index) => (
-            <li key={index} className={styles.listItem}>
-              <Ticket {...ticket} />
-            </li>
-          ))}
-        {/* {stop ? (
-        <button className={styles.showMore}>ВСЕ БИЛЕТЫ ЗАГРУЖЕНЫ</button>
-      ) : (
-        <button className={styles.showMore} onClick={handleLoadMore}>
-          ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
-        </button>
-      )} */}
-        {/* <button className={styles.showMore} onClick={handleLoadMore}>
-          ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
-        </button> */}
-        <button
-          className={styles.showMore}
-          onClick={() => dispatch(handleLoadMore())}
-        >
-          ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
-        </button>
+        {filteredAndSortedTickets.slice(0, numberOfTickets).map((ticket) => (
+          <li key={id()} className={styles.listItem}>
+            <Ticket {...ticket} />
+          </li>
+        ))}
+        {filteredAndSortedTickets.length - numberOfTickets > 0 && (
+          <button className={styles.showMore} onClick={() => dispatch(handleLoadMore())}>
+            ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
+          </button>
+        )}
       </ul>
     </>
   );

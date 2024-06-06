@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -6,22 +7,18 @@ const initialState = {
   error: "",
 };
 
-export const fetchSearchId = createAsyncThunk(
-  "sessionId/fetchSearchId",
-  async (_, { rejectWithValue }) => {
-    console.log("id");
-    try {
-      const res = await fetch("https://aviasales-test-api.kata.academy/search");
-      if (!res.ok) {
-        throw new Error("Failed to fetch search");
-      }
-      const data = await res.json();
-      return await data.searchId;
-    } catch (e) {
-      return rejectWithValue(e.message);
+export const fetchSearchId = createAsyncThunk("sessionId/fetchSearchId", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetch("https://aviasales-test-api.kata.academy/search");
+    if (!res.ok) {
+      throw new Error("Failed to fetch search");
     }
+    const data = await res.json();
+    return await data.searchId;
+  } catch (e) {
+    return rejectWithValue(e.message);
   }
-);
+});
 
 const sessionIdSlice = createSlice({
   name: "sessionId",

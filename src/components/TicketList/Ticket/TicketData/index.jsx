@@ -1,11 +1,14 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-nested-ternary */
 import React from "react";
-import styles from "./TicketData.module.scss";
 import { addMinutes, format, parseISO } from "date-fns";
 
+import styles from "./TicketData.module.scss";
+
 const TicketData = ({ origin, destination, date, stops, duration }) => {
-  const calculateArrivalDate = (date, duration) => {
-    const departureDate = parseISO(date);
-    const arrivalDate = addMinutes(departureDate, duration);
+  const calculateArrivalDate = (flightDate, flightDuration) => {
+    const departureDate = parseISO(flightDate);
+    const arrivalDate = addMinutes(departureDate, flightDuration);
     return arrivalDate;
   };
 
@@ -16,8 +19,7 @@ const TicketData = ({ origin, destination, date, stops, duration }) => {
           {origin} – {destination}
         </span>
         <span className={styles.filterValue}>
-          {format(parseISO(date), "HH:mm")} -{" "}
-          {format(calculateArrivalDate(date, duration), "HH:mm")}
+          {format(parseISO(date), "HH:mm")} - {format(calculateArrivalDate(date, duration), "HH:mm")}
         </span>
       </div>
       <div className={styles.item}>
@@ -31,8 +33,8 @@ const TicketData = ({ origin, destination, date, stops, duration }) => {
           {stops.length === 0
             ? "БЕЗ ПЕРЕСАДОК"
             : stops.length === 1
-            ? "1 ПЕРЕСАДКА"
-            : stops.length > 1 && `${stops.length} ПЕРЕСАДКИ`}
+              ? "1 ПЕРЕСАДКА"
+              : stops.length > 1 && `${stops.length} ПЕРЕСАДКИ`}
         </span>
         <span className={styles.filterValue}>{stops.join(", ")}</span>
       </div>

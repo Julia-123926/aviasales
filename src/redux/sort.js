@@ -1,4 +1,4 @@
-export function filterAndSortTickets(tickets, filters, sorting) {
+export default function filterAndSortTickets(tickets, filters, sorting) {
   const filteredTickets = tickets.filter((ticket) => {
     const [goThereSegment, goBackSegment] = ticket.segments;
     const hasNoStops =
@@ -48,6 +48,3 @@ export function filterAndSortTickets(tickets, filters, sorting) {
 
   return filteredTickets;
 }
-
-//отдельная функция по сортировке пересадок
-//отдельная функция по сортировке табов
