@@ -1,14 +1,10 @@
 export default function filterAndSortTickets(tickets, filters, sorting) {
   const filteredTickets = tickets.filter((ticket) => {
     const [goThereSegment, goBackSegment] = ticket.segments;
-    const hasNoStops =
-      goThereSegment.stops.length === 0 || goBackSegment.stops.length === 0;
-    const hasOneStop =
-      goThereSegment.stops.length === 1 || goBackSegment.stops.length === 1;
-    const hasTwoStops =
-      goThereSegment.stops.length === 2 || goBackSegment.stops.length === 2;
-    const hasThreeStops =
-      goThereSegment.stops.length === 3 || goBackSegment.stops.length === 3;
+    const hasNoStops = goThereSegment.stops.length === 0 || goBackSegment.stops.length === 0;
+    const hasOneStop = goThereSegment.stops.length === 1 || goBackSegment.stops.length === 1;
+    const hasTwoStops = goThereSegment.stops.length === 2 || goBackSegment.stops.length === 2;
+    const hasThreeStops = goThereSegment.stops.length === 3 || goBackSegment.stops.length === 3;
     if (filters.all) {
       return true;
     }
@@ -34,14 +30,8 @@ export default function filterAndSortTickets(tickets, filters, sorting) {
 
   if (sorting === "САМЫЙ БЫСТРЫЙ" || sorting === "ОПТИМАЛЬНЫЙ") {
     return filteredTickets.sort((a, b) => {
-      const durationA = a.segments.reduce(
-        (acc, segment) => acc + segment.duration,
-        0
-      );
-      const durationB = b.segments.reduce(
-        (acc, segment) => acc + segment.duration,
-        0
-      );
+      const durationA = a.segments.reduce((acc, segment) => acc + segment.duration, 0);
+      const durationB = b.segments.reduce((acc, segment) => acc + segment.duration, 0);
       return durationA - durationB;
     });
   }

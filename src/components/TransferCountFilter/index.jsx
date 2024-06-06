@@ -35,11 +35,7 @@ const TransferCountFilter = () => {
               <label htmlFor={filter.key}>
                 <div className={styles.listElement}>
                   <input
-                    onChange={() =>
-                      filter.key === "all"
-                        ? handleToggleAll()
-                        : handleToggleFilter(filter.key)
-                    }
+                    onChange={() => (filter.key === "all" ? handleToggleAll() : handleToggleFilter(filter.key))}
                     className={styles.checkbox}
                     checked={filters[filter.key]}
                     type="checkbox"
